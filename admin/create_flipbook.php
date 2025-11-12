@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
         $r = create_flipbook($payload);
         if ($r['status'] >= 200 && $r['status'] < 300) {
-            header('Location: dashboard.php'); exit;
+            header('Location: /?route=dashboard'); // ✅ perbaikan redirect
+            exit;
         } else {
             $error = $r['error'] ?? 'Gagal menambah data';
         }

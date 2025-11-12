@@ -11,7 +11,7 @@ $flipbooks = $res['status'] === 200 ? $res['data'] : [];
 <body>
   <h1>Dashboard Admin</h1>
   <p>Welcome, <?= htmlspecialchars($_SESSION['admin']['email']) ?></p>
-  <p><a href="create_flipbook.php">Tambah Flipbook</a> | <a href="logout.php">Logout</a></p>
+  <p><a href="/?route=create">Tambah Flipbook</a> | <a href="/?route=logout">Logout</a></p>
 
   <table border="1" cellpadding="6">
     <tr><th>Title</th><th>Category</th><th>Status</th><th>Action</th></tr>
@@ -21,8 +21,8 @@ $flipbooks = $res['status'] === 200 ? $res['data'] : [];
         <td><?= htmlspecialchars($fb['category'] ?? '-') ?></td>
         <td><?= htmlspecialchars($fb['status'] ?? '-') ?></td>
         <td>
-          <a href="edit_flipbook.php?id=<?= htmlspecialchars($fb['id']) ?>">Edit</a> |
-          <a href="#" onclick="if(confirm('Delete?')) location.href='edit_flipbook.php?delete=<?= htmlspecialchars($fb['id']) ?>'">Delete</a>
+          <a href="/?route=edit/<?= htmlspecialchars($fb['id']) ?>">Edit</a> |
+          <a href="/?route=edit/<?= htmlspecialchars($fb['id']) ?>&delete=1" onclick="return confirm('Hapus data ini?')">Delete</a>
         </td>
       </tr>
     <?php endforeach; ?>

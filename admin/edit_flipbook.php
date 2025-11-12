@@ -2,11 +2,14 @@
 require_once __DIR__ . '/../auth_admin.php';
 require_admin();
 require_once __DIR__ . '/../flipbook_model.php';
+require_once __DIR__ . '/../upload_helper.php';
 
 $id = $_GET['id'] ?? null;
-if (isset($_GET['delete'])) {
-    $d = delete_flipbook($_GET['delete']);
-    header('Location: dashboard.php'); exit;
+
+if (isset($_GET['delete']) && $id) {
+    $d = delete_flipbook($id);
+    header('Location: /?route=dashboard'); // ✅
+    exit;
 }
 
 if ($id) {
@@ -14,20 +17,6 @@ if ($id) {
     $fb = ($get['status']===200 && !empty($get['data'])) ? $get['data'][0] : null;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
-    $payload = [
-        'title' => $_POST['title'] ?? '',
-        'description' => $_POST['description'] ?? '',
-        'file_url' => $_POST['file_url'] ?? '',
-        'embed_url' => $_POST['embed_url'] ?? '',
-        'category' => $_POST['category'] ?? 'Dasar',
-        'status' => $_POST['status'] ?? 'Aktif'
-    ];
-    $r = update_flipbook($id, $payload);
-    header('Location: dashboard.php'); exit;
-}
-
-require_once __DIR__ . '/../upload_helper.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
     $fileUrl = $fb['file_url'] ?? null;
     if (!empty($_FILES['file']['name'])) {
@@ -44,9 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
         'status' => $_POST['status'] ?? 'Aktif'
     ];
     $r = update_flipbook($id, $payload);
-    header('Location: dashboard.php'); exit;
+    header('Location: /?route=dashboard'); // ✅
+    exit;
 }
-
 ?>
 <!doctype html>
 <html><body>
@@ -65,5 +54,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
     </select><br>
     <button>Update</button>
   </form>
-
 </body></html>

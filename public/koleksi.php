@@ -9,14 +9,20 @@ $flipbooks = $res['status'] === 200 ? $res['data'] : [];
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Koleksi Flipbook - Statoku</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="<?= base_url('public/assets/css/style.css') ?>">
 </head>
 <body>
   <header>
     <nav>
-      <a href="/">Home</a> |
-      <a href="/koleksi.php">Koleksi Flipbook</a> |
-      <a href="/about.php">Tentang</a>
+      <a href="/statoku/">Home</a> |
+      <a href="/statoku/?route=koleksi">Koleksi Flipbook</a> |
+      <a href="/statoku/?route=tentang">Tentang</a>
+      <?php if (isset($_SESSION['admin'])): ?>
+        | <a href="/statoku/?route=dashboard">Dashboard</a>
+        | <a href="/statoku/?route=logout">Logout</a>
+      <?php else: ?>
+        | <a href="/statoku/?route=login">Login</a>
+      <?php endif; ?>
     </nav>
   </header>
 
@@ -28,7 +34,7 @@ $flipbooks = $res['status'] === 200 ? $res['data'] : [];
           <img src="<?= htmlspecialchars($fb['file_url'] ?? '/assets/img/placeholder.png') ?>" alt="<?= htmlspecialchars($fb['title']) ?>" />
           <h3><?= htmlspecialchars($fb['title']) ?></h3>
           <p><?= htmlspecialchars($fb['description'] ?? '') ?></p>
-          <p><a href="flipbook_detail.php?id=<?= urlencode($fb['id']) ?>">Baca Sekarang</a></p>
+          <p><a href="?route=flipbook/<?= urlencode($fb['id']) ?>">Baca Sekarang</a></p>
         </div>
       <?php endforeach; ?>
     </div>
