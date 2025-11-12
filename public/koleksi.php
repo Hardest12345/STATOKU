@@ -3,57 +3,142 @@ require_once __DIR__ . '/../flipbook_model.php';
 $res = get_all_flipbooks();
 $flipbooks = $res['status'] === 200 ? $res['data'] : [];
 ?>
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Koleksi Flipbook - Statoku</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koleksi Flipbook - Learn with Statoku</title>
+  <link rel="icon" type="image/png" href="<?= base_url('public/assets/images/maskot stato.png') ?>"> <!-- Logo -->
   <link rel="stylesheet" href="<?= base_url('public/assets/css/style.css') ?>">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="/statoku/">Home</a> |
-      <a href="/statoku/?route=koleksi">Koleksi Flipbook</a> |
-      <a href="/statoku/?route=tentang">Tentang</a>
-      <?php if (isset($_SESSION['admin'])): ?>
-        | <a href="/statoku/?route=dashboard">Dashboard</a>
-        | <a href="/statoku/?route=logout">Logout</a>
-      <?php else: ?>
-        | <a href="/statoku/?route=login">Login</a>
-      <?php endif; ?>
-    </nav>
-  </header>
 
-  <main>
-    <h1>Koleksi Flipbook Statistika – Update Setiap Bulan!</h1>
-    <div class="grid">
-      <?php foreach ($flipbooks as $fb): ?>
-        <div class="card">
-          <img src="<?= htmlspecialchars($fb['file_url'] ?? '/assets/img/placeholder.png') ?>" alt="<?= htmlspecialchars($fb['title']) ?>" />
-          <h3><?= htmlspecialchars($fb['title']) ?></h3>
-          <p><?= htmlspecialchars($fb['description'] ?? '') ?></p>
-          <p><a href="?route=flipbook/<?= urlencode($fb['id']) ?>">Baca Sekarang</a></p>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <div class="container">
+      <ul>
+        <li><a href="/statoku/">Home</a></li>
+        <li><a href="/statoku/?route=koleksi" class="active">Koleksi Flipbook</a></li>
+        <li><a href="/statoku/?route=kuis">Kuis Interaktif</a></li>
+        <li><a href="/statoku/?route=tentang">Tentang</a></li>
+        <?php if (isset($_SESSION['admin'])): ?>
+          <li><a href="/statoku/?route=dashboard">Dashboard</a></li>
+          <li><a href="/statoku/?route=logout">Logout</a></li>
+        <?php else: ?>
+          <li><a href="/statoku/?route=login">Login</a></li>
+        <?php endif; ?>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HEADER ===== -->
+  <div class="page-header">
+    <h1>Koleksi Flipbook Statistika</h1>
+    <p>Update Setiap Bulan!</p>
+  </div>
+
+  <!-- ===== SEARCH + CATEGORY ===== -->
+  <div class="container-main-koleksi">
+    <div class="topbar">
+      <div class="left-controls">
+        <div class="search" role="search">
+          <input id="searchInput" type="search" placeholder="Cari flipbook..." aria-label="Cari buku berdasarkan judul">
         </div>
-      <?php endforeach; ?>
+      </div>
+
+      <div class="controls-right">
+        <!-- <div class="category-select" id="categoryBtn" role="button" tabindex="0">
+          <span id="categoryLabel">Semua Kategori</span> <span style="opacity:0.6">▾</span>
+        </div> -->
+      </div>
     </div>
 
-    <script>
-    function openViewer(url) {
-        const w = window.open('', 'flipbook', 'width=900,height=700');
-        w.document.write(`
-        <html><head><title>Flipbook Viewer</title></head><body style="margin:0">
-            <iframe src="${url}" allowfullscreen="allowfullscreen" style="width:100%;height:100%;border:none"></iframe>
-        </body></html>
-        `);
-    }
-    </script>
+    <!-- ===== GRID KOLEKSI ===== -->
+    <main>
+      <section class="books-grid" id="booksGrid">
+        <?php if (count($flipbooks) > 0): ?>
+          <?php foreach ($flipbooks as $fb): ?>
+            <article class="book-card" 
+              data-title="<?= htmlspecialchars($fb['title']) ?>" 
+              data-category="<?= htmlspecialchars($fb['category']) ?>" 
+              data-status="<?= htmlspecialchars($fb['status']) ?>">
+              
+              <div class="book-cover">
+                <img src="<?= htmlspecialchars($fb['file_url'] ?? base_url('public/assets/media/book-cover.png')) ?>" 
+                    alt="<?= htmlspecialchars($fb['title']) ?>">
+              </div>
 
-  </main>
+              <div class="book-body">
+                <h3 class="book-title"><?= htmlspecialchars($fb['title']) ?></h3>
+                <p class="book-desc"><?= htmlspecialchars($fb['description'] ?? '') ?></p>
 
-  <footer>
-    <p>Statistika Jadi Cerita — Konten flipbook diperbarui setiap bulan.</p>
+                <div class="card-footer">
+                  <a class="btn-read" href="?route=flipbook/<?= urlencode($fb['id']) ?>">Baca Sekarang</a>
+                  <div class="status-pill <?= strtolower($fb['status']) ?>" title="Status: <?= htmlspecialchars($fb['status']) ?>">
+                    <?= htmlspecialchars($fb['status']) ?>
+                  </div>
+                </div>
+              </div>
+            </article>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <p style="text-align:center">Belum ada flipbook tersedia.</p>
+        <?php endif; ?>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="<?= base_url('public/assets/images/maskot stato.png') ?>" alt="Stato" />
+        <div>
+          <h3>Learn with Statoku</h3>
+          <p class="footer-tagline">Statistika Jadi Cerita</p>
+        </div>
+      </div>
+
+      <div>
+        <h3>Halaman</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="?route=koleksi">Koleksi Flipbook</a></li>
+          <li><a href="?route=tentang">Tentang</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Kontak</h3>
+        <ul>
+          <li>info@statoku.com</li>
+          <li>+62 812-3456-7890</li>
+          <li style="margin-top: 1rem;">
+            <a href="#">Instagram</a> •
+            <a href="#">YouTube</a> •
+            <a href="#">TikTok</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Learn with Statoku. Konten flipbook diperbarui secara berkala setiap bulan.</p>
+    </div>
   </footer>
+
+  <script>
+  function openViewer(url) {
+    const w = window.open('', 'flipbook', 'width=900,height=700');
+    w.document.write(`
+      <html><head><title>Flipbook Viewer</title></head>
+      <body style="margin:0"><iframe src="${url}" allowfullscreen style="width:100%;height:100%;border:none"></iframe></body></html>
+    `);
+  }
+  </script>
+  <script src="<?= base_url('public/assets/js/main.js') ?>"></script>
 </body>
 </html>

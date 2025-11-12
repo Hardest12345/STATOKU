@@ -32,6 +32,10 @@ switch (true) {
         include __DIR__ . '/public/about.php';
         break;
 
+    case ($route === 'kuis' || $route === 'kuis'):
+        include __DIR__ . '/public/kuis.php';
+        break;
+
     case (preg_match('/^flipbook\/([a-zA-Z0-9\-]+)$/', $route, $m)):
         $_GET['id'] = $m[1];
         include __DIR__ . '/public/flipbook_detail.php';
