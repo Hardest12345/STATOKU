@@ -1,7 +1,13 @@
 services:
   - type: web
     name: statoku
-    env: php
+    env: docker
     plan: free
-    buildCommand: ""
-    startCommand: php -S 0.0.0.0:10000 index.php
+    region: singapore
+    autoDeploy: true
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PHP_ENV
+        value: production
+      - key: APP_NAME
+        value: "Learn with Statoku"
