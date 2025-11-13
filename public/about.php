@@ -63,12 +63,12 @@
       <li>Terus berinovasi dalam metode pembelajaran digital</li>
     </ul>
 
-    <h2>Tim Pengembang</h2>
+    <!-- <h2>Tim Pengembang</h2>
     <ul style="margin-left: 2rem;">
       <li>Nama Pengembang 1 – Developer</li>
       <li>Nama Pengembang 2 – UI/UX Designer</li>
       <li>Nama Pengembang 3 – Researcher</li>
-    </ul>
+    </ul> -->
 
     <h2>Fitur Unggulan</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0;">
@@ -117,21 +117,30 @@
       <div>
         <h3>Halaman</h3>
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="?route=koleksi">Koleksi Flipbook</a></li>
-          <li><a href="?route=tentang">Tentang</a></li>
+          <li><a href="<?= base_url() ?>">Home</a></li>
+          <li><a href="<?= base_url('?route=koleksi') ?>">Koleksi Flipbook</a></li>
+          <li><a href="<?= base_url('?route=kuis') ?>">Kuis Interaktif</a></li>
+          <li><a href="<?= base_url('?route=tentang') ?>">Tentang</a></li>
         </ul>
       </div>
 
-      <div>
+    <div>
         <h3>Kontak</h3>
         <ul>
-          <li>info@statoku.com</li>
-          <li>+62 812-3456-7890</li>
+          <li>
+            <a href="mailto:learnwithstato@gmail.com" target="_blank">
+              Gmail learnwithstato@gmail.com
+            </a>
+          </li>
+          <li>
+            <a href="https://wa.me/6283131314170" target="_blank" rel="noopener noreferrer">
+              WhatsApp +62 812-3456-7890
+            </a>
+          </li>
           <li style="margin-top: 1rem;">
-            <a href="#">Instagram</a> •
-            <a href="#">YouTube</a> •
-            <a href="#">TikTok</a>
+            <a href="https://www.instagram.com/learnwithstato" target="_blank" rel="noopener noreferrer">
+              Instagram @learnwithstato
+            </a>
           </li>
         </ul>
       </div>
